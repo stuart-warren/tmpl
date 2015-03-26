@@ -1,0 +1,6 @@
+{{ if ne env.HOSTNAME nil }}Host={{ env.HOSTNAME }}{{ end }}
+User={{ env.USER }}
+Path={{ env.PATH }}
+Protocol={{ $url := parseURL "http://www.somesite.com/some/path" }}{{ $url.Scheme }}
+Folder={{ $parts := split $url.String "/" }}{{ index $parts 4 }}
+WeirdURL={{ replace $url.String "/" "\\" -1 }}
