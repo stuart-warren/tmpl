@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -8,11 +10,24 @@ import (
 	"text/template"
 )
 
+var (
+	versionFlag = flag.Bool("v", false, "prints current version")
+	bytesIn     []byte
+	err         error
+)
+
 func main() {
-	var (
-		bytesIn []byte
-		err     error
-	)
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %s [filename|-]:\n", os.Args[0])
+		flag.PrintDefaults()
+	}
+	flag.Parse()
+
+	if *versionFlag {
+		fmt.Printf("tmpl %s\n", version)
+		os.Exit(0)
+	}
+
 	if len(os.Args) > 1 {
 		filename := os.Args[1]
 		bytesIn, err = ioutil.ReadFile(filename)

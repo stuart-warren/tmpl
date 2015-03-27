@@ -25,7 +25,7 @@ See ``test.template`` for examples
 Why?
 ----
 
-This was mostly created to replace ``erb`` in my workflow and remove the need to install ``ruby`` just to insert environment variables into config files (and easier that using ``sed``)
+This was primarily created to replace ``erb`` in my workflow with docker, plus remove the need to install ``ruby`` just to insert environment variables into config files (easier than using ``sed``)
 
 How
 ---
