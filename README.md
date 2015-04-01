@@ -9,6 +9,7 @@ Some simple utility functions are provided
 * ne - opposite of eq
 * parseURL - take a string URL and return a [url.URL](https://golang.org/pkg/net/url/#URL) type
 * split - take a string and split into a slice
+* join - take a slice and join into a string
 * replace - take a string and replace a substring with another a number of times (-1 for no limit)
 
 Usage

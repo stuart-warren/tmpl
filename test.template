@@ -1,6 +1,8 @@
-{{ if ne env.HOSTNAME nil }}Host={{ env.HOSTNAME }}{{ end }}
-User={{ env.USER }}
-Path={{ env.PATH }}
+Host={{ default (env "HOSTNAME") "Unknown" }}
+User={{ env "USER" }}
+Path={{ env "PATH" }}
 Protocol={{ $url := parseURL "http://www.somesite.com/some/path" }}{{ $url.Scheme }}
-Folder={{ $parts := split $url.String "/" }}{{ index $parts 4 }}
 WeirdURL={{ replace $url.String "/" "\\" -1 }}
+Folder={{ index (split $url.String "/") 4 }}
+{{ range $k, $v := filterPrefix envAll "TERM" }}
+{{ $k }} => {{ $v }}{{ end }}

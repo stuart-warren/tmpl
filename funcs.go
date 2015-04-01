@@ -11,7 +11,11 @@ import (
 type context struct {
 }
 
-func env() map[string]string {
+func env(key string) string {
+	return os.Getenv(key)
+}
+
+func envAll() map[string]string {
 	env := make(map[string]string)
 	for _, i := range os.Environ() {
 		sep := strings.Index(i, "=")
@@ -20,41 +24,31 @@ func env() map[string]string {
 	return env
 }
 
-func contains(item map[string]string, key string) bool {
-	if _, ok := item[key]; ok {
+func contains(items map[string]string, key string) bool {
+	if _, ok := items[key]; ok {
 		return true
 	}
 	return false
 }
 
-func defaultValue(args ...interface{}) string {
-	if len(args) == 0 {
-		log.Fatalf("default called with no values")
-		return ""
-	}
-
-	if len(args) > 0 {
-		if args[0] != nil {
-			return args[0].(string)
+func filterPrefix(items map[string]string, prefix string) map[string]string {
+	ret := make(map[string]string)
+	for k, v := range items {
+		if strings.HasPrefix(k, prefix) {
+			ret[k] = v
 		}
 	}
+	return ret
+}
 
-	if len(args) > 1 {
-		if args[1] == nil {
-			log.Fatalf("default called with nil default value")
-			return ""
+func filterSuffix(items map[string]string, suffix string) map[string]string {
+	ret := make(map[string]string)
+	for k, v := range items {
+		if strings.HasSuffix(k, suffix) {
+			ret[k] = v
 		}
-
-		if _, ok := args[1].(string); !ok {
-			log.Fatalf("default is not a string value. hint: surround it w/ double quotes")
-			return ""
-		}
-
-		return args[1].(string)
 	}
-
-	log.Fatalf("default called with no default value")
-	return ""
+	return ret
 }
 
 func parseURL(rawurl string) *url.URL {
@@ -63,6 +57,13 @@ func parseURL(rawurl string) *url.URL {
 		log.Fatalf("unable to parse url %s: %s", rawurl, err)
 	}
 	return u
+}
+
+func defaultStr(item string, defaultValue string) string {
+	if item == "" {
+		item = defaultValue
+	}
+	return item
 }
 
 func eq(x, y interface{}) bool {
